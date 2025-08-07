@@ -2,35 +2,72 @@ import "./style.css"
 
 class Project {
     constructor(title) {
-        this.title = title;
+        this._title = title;
+        this._todoList = [];
     }
 
     get title() {
-        return this.title;
+        return this._title;
+    }
+
+    set title(title) {
+        this._title = title;
+    }
+
+    addTodo(todo) {
+        this._todoList.push(todo);
+    }
+
+    get todoList() {
+        return this._todoList;
     }
 }
 
 class TodoItem {
     constructor(title, description, dueDate, priority) {
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
-        this.priority = priority;
+        this._title = title;
+        this._description = description;
+        this._dueDate = dueDate;
+        this._priority = priority;
     }
 
     get title() {
-        return this.title;
+        return this._title;
     }
 
     get description() {
-        return this.description;
+        return this._description;
     }
 
     get dueDate() {
-        return this.dueDate;
+        return this._dueDate;
     }
 
     get priority() {
-        return this.priority;
+        return this._priority;
+    }
+
+    set title(title) {
+        this._title = title;
+    }
+
+    set description(description) {
+        this._description = description;
+    }
+
+    set dueDate(dueDate) {
+        this._dueDate = dueDate;
+    }
+
+    set priority(priority) {
+        this._priority = priority;
     }
 }
+
+document.querySelector(".project-btn").addEventListener("click", () => {
+    const dialog = document.getElementById("create-project");
+    dialog.showModal();
+    document.getElementById("cancel-btn").addEventListener("click", () => {
+        dialog.close();
+    });
+});
