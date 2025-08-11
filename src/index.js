@@ -1,5 +1,7 @@
 import "./style.css"
 
+const projectsList = [];
+
 class Project {
     constructor(title) {
         this._title = title;
@@ -67,7 +69,19 @@ class TodoItem {
 document.querySelector(".project-btn").addEventListener("click", () => {
     const dialog = document.getElementById("create-project");
     dialog.showModal();
+
     document.getElementById("cancel-btn").addEventListener("click", () => {
         dialog.close();
     });
+
+    const form = document.getElementById("create-project-form");
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const title = document.getElementById("project-title").value;
+        projectsList.push(new Project(title));
+        
+        dialog.close();
+    })
 });
+
