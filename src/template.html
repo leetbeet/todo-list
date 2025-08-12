@@ -15,50 +15,56 @@
     </section>
 
     <dialog id="create-project">
-        <form action="#" method="dialog" id="create-project-form">
+        <form action="#" method="dialog">
             <div>
                 <label for="project-title">Title: </label>
                 <input type="text" id="project-title" name="project-title" required>
             </div>
 
             <div class="form-buttons">
-                <button class="cancel-btn">Cancel</button>
-                <button class="submit-btn">Submit</button>
+                <button class="cancel-btn" type="button">Cancel</button>
+                <button class="submit-btn" type="submit">Submit</button>
             </div>
         </form>
     </dialog>
 
     <dialog id="create-task">
-        <form action="#" method="dialog" id="create-task-form">
+        <form action="#" method="dialog">
             <div>
                 <label for="task-title">Title: </label>
                 <input type="text" id="task-title" name="task-title" required>
             </div>
             <div>
                 <label for="desc">Description: </label>
-                <input type="text" name="desc" id="desc">
+                <input type="text" name="desc" id="desc" required>
             </div>
             <div>
                 <label for="due-date">Due date: </label>
-                <input type="date" name="due-date" id="due-date">
+                <input type="date" name="due-date" id="due-date" required>
             </div>
             <div>
                 <p>Priority: </p>
 
-                <label for="very-urgent">Very urgent</label>
-                <input type="radio" name="Priority" id="very-urgent" value="urgent">
+                <div>
+                    <label for="very-urgent">Very urgent</label>
+                    <input type="radio" name="priority" id="very-urgent" value="very-urgent" required>
+                </div>
 
-                <label for="urgent">Urgent</label>
-                <input type="radio" name="Priority" id="urgent" value="urgent">
+                <div>
+                    <label for="urgent">Urgent</label>
+                    <input type="radio" name="priority" id="urgent" value="urgent">
+                </div>
 
-                <label for="not-urgent">Not urgent</label>
-                <input type="radio" name="Priority" id="not-urgent" value="not-urgent">
+                <div>
+                    <label for="not-urgent">Not urgent</label>
+                    <input type="radio" name="priority" id="not-urgent" value="not-urgent">
+                </div>
+
+                <div class="form-buttons">
+                    <button class="cancel-btn" type="button">Cancel</button>
+                    <button class="submit-btn" type="submit">Submit</button>
+                </div>
             </div>
-
-            <div class="form-buttons">
-                <button class="cancel-btn">Cancel</button>
-                <button class="submit-btn">Submit</button>
-            </div>            
         </form>
     </dialog>
 </body>

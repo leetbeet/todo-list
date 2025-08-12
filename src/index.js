@@ -95,6 +95,6 @@ setupDialog(".task-btn", "create-task", (dialog) => {
     const title = dialog.querySelector("#task-title").value;
     const desc = dialog.querySelector("#desc").value;
     const dueDate = dialog.querySelector("#due-date").value;
-    const priority = dialog.querySelector("#priority").value;
+    const priority = dialog.querySelector('input[name="priority"]:checked').value;
 });
 
