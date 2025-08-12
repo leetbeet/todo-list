@@ -66,22 +66,35 @@ class TodoItem {
     }
 }
 
-document.querySelector(".project-btn").addEventListener("click", () => {
-    const dialog = document.getElementById("create-project");
-    dialog.showModal();
+function setupDialog(openBtnSelector, dialogId, onSubmit) {
+    document.querySelector(openBtnSelector).addEventListener("click", () => {
+        const dialog = document.getElementById(dialogId);
+        dialog.showModal();
 
-    document.getElementById("cancel-btn").addEventListener("click", () => {
-        dialog.close();
+        dialog.querySelector(".cancel-btn").addEventListener("click", () => {
+            dialog.close();
+        }, { once: true });
+
+        const form = dialog.querySelector("form");
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            onSubmit(dialog);
+            dialog.close();
+        }, { once: true });
     });
+}
 
-    const form = document.getElementById("create-project-form");
-    form.addEventListener("submit", function(e) {
-        e.preventDefault();
+// Project dialog
+setupDialog(".project-btn", "create-project", (dialog) => {
+    const title = dialog.querySelector("#project-title").value;
+    projectsList.push(new Project(title));
+});
 
-        const title = document.getElementById("project-title").value;
-        projectsList.push(new Project(title));
-        
-        dialog.close();
-    })
+// Task dialog
+setupDialog(".task-btn", "create-task", (dialog) => {
+    const title = dialog.querySelector("#task-title").value;
+    const desc = dialog.querySelector("#desc").value;
+    const dueDate = dialog.querySelector("#due-date").value;
+    const priority = dialog.querySelector("#priority").value;
 });
 
