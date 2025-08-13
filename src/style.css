@@ -27,6 +27,7 @@ body {
     color: var(--dark-gray);
     background-color: var(--gray);
     border-right: 1px solid var(--gray-border);
+    overflow-y: auto;
 }
 
 .todo-list {
@@ -34,19 +35,28 @@ body {
     width: 82vw;
 }
 
-.project-btn {
+.add-project-btn {
     display: flex;
     align-items: center;
     text-align: left;
     border: none;
-    padding-top: 12px;
+    padding: 12px 0;
     background-color: var(--gray);
 }
 
+.project-btn {
+    text-align: left;
+    background-color: var(--gray);
+    border: none;
+    font-size: 16px;
+}
+
+.add-project-btn:hover,
 .project-btn:hover {
     opacity: 0.5;
 }
 
+.add-project-btn:active,
 .project-btn:active {
     opacity: 0.75;
 }
