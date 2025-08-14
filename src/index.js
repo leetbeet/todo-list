@@ -97,6 +97,9 @@ const todo = (() => {
         },
         getCurrentProject() {
             return currentProject;
+        },
+        getCurrentTask(taskId) {
+            return currentProject._todoList.find(task => task.id === taskId);
         }
     };
 })();
@@ -111,6 +114,7 @@ const loadTasks = () => {
         const taskItem = document.createElement("div");
         taskItem.className = "task";
         taskItem.id = task._id;
+        taskItem.addEventListener("click", () => taskEventListener(task));
 
         const taskTitle = document.createElement("div");
         taskTitle.className = "task-title";
@@ -127,6 +131,18 @@ const loadTasks = () => {
 function projectEventListener(projectId) {
     todo.updateCurrentProject(projectId);
     loadTasks();
+}
+
+function taskEventListener(task) {
+    const dialog = document.getElementById("show-task");
+    const taskInfo = dialog.children;
+    taskInfo[1].textContent = `Title: ${task._title}`;
+    taskInfo[2].textContent = `Description: ${task._description}`;
+    taskInfo[3].textContent = `Due date: ${task._dueDate}`;
+    taskInfo[4].textContent = `Priority: ${task._priority}`;
+    dialog.showModal();
+
+    document.querySelector(".close-btn").addEventListener("click", () => dialog.close(), { once: true });
 }
 
 function setupDialog(openBtnSelector, dialogId, onSubmit) {

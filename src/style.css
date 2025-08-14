@@ -51,13 +51,11 @@ body {
     font-size: 16px;
 }
 
-.add-project-btn:hover,
-.project-btn:hover {
+button:hover {
     opacity: 0.5;
 }
 
-.add-project-btn:active,
-.project-btn:active {
+button:active {
     opacity: 0.75;
 }
 
@@ -96,4 +94,16 @@ form {
 #submit-btn {
     color: white;
     background-color: black;
+}
+
+.close-btn {
+    float: right;
+    height: 20px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    border: none;
+}
+
+#show-task div {
+    padding: 2px;
 }
