@@ -23,6 +23,10 @@ class Project {
         return this._todoList;
     }
 
+    set todoList(todoList) {
+        this._todoList = todoList;
+    }
+
     get id() {
         return this._id;
     }
@@ -100,6 +104,9 @@ const todo = (() => {
         },
         getCurrentTask(taskId) {
             return currentProject.todoList.find(task => task.id === taskId);
+        },
+        removeTask(taskId) {
+            currentProject.todoList = currentProject.todoList.filter(task => task.id !== taskId);
         }
     };
 })();
@@ -132,12 +139,18 @@ const displayTasks = () => {
         editBtn.textContent = "Edit";
         editBtn.addEventListener("click", (e) => {
             e.stopPropagation();
-            editTask(task.id)
+            editTask(task.id);
         });
 
         const delBtn = document.createElement("button");
         delBtn.textContent = "Delete";
         delBtn.className = "del-btn";
+        delBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const container = delBtn.parentElement.parentElement;
+            todo.removeTask(task.id);
+            container.remove();
+        })
 
         taskBtns.append(editBtn, delBtn);
         taskItem.append(taskTitle, taskDueDate, taskBtns);
@@ -179,9 +192,6 @@ function editTask(taskId) {
 
     dialog.showModal();
 }
-
-
-
 
 function showTask(task) {
     const dialog = document.getElementById("show-task");
@@ -240,5 +250,3 @@ setupDialog(".task-btn", "create-task", (dialog) => {
     todo.addProjectTask(new Task(title, desc, dueDate, priority));
     displayTasks();
 }); 
-
-
