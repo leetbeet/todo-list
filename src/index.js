@@ -11,10 +11,6 @@ class Project {
         return this._title;
     }
 
-    set title(title) {
-        this._title = title;
-    }
-
     addTask(task) {
         this._todoList.push(task);
     }
@@ -79,40 +75,29 @@ class Task {
 }
 
 const todo = (() => {
-    let projectsList = [new Project("Today")];
+    let projects = [new Project("Today")];
+    let currentProject = projects[0];
+
     const projectToday = document.querySelector(".project-btn");
-    projectToday.id = projectsList[0].id;
-    projectToday.addEventListener("click", () => projectEvent(projectsList[0].id));    
-    let currentProject = projectsList[0];
+    projectToday.id = projects[0].id;
+    projectToday.addEventListener("click", () => projectEvent(projects[0].id));    
 
     return {
-        addProject(project) {
-            projectsList.push(project);
-            return project.id;
-        },
-        removeProject(projectId) {
-            projectsList = projectsList.filter(project => project.id !== projectId);
-        },
-        addProjectTask(task) {
-            currentProject.addTask(task);
-        },
-        updateCurrentProject(projectId) {
-            currentProject = projectsList.find(project => project.id === projectId);
-        },
-        getCurrentProject() {
-            return currentProject;
-        },
-        getCurrentTask(taskId) {
-            return currentProject.todoList.find(task => task.id === taskId);
-        },
-        removeTask(taskId) {
-            currentProject.todoList = currentProject.todoList.filter(task => task.id !== taskId);
-        }
+        getCurrentProject: () => currentProject,
+        setCurrentProject: (projectId) => currentProject = projects.find(p => p.id === projectId),
+        addProject: (project) => { projects.push(project); return project.id; },
+        removeProject: (id) => { projects = projects.filter(p => p.id !== id); },
+        addTask: (task) => currentProject.addTask(task),
+        removeTask: (taskId) => currentProject.todoList = currentProject.todoList.filter(t => t.id !== taskId),
+        getTask: (taskId) => currentProject.todoList.find(t => t.id === taskId)
     };
 })();
 
+
 const displayTasks = () => {
     const currentProject = todo.getCurrentProject();
+    const tasksTabHeader = document.querySelector(".tasks-tab-header");
+    tasksTabHeader.textContent = currentProject.title;
     const tasksTab = document.querySelector(".tasks-tab");
     tasksTab.innerHTML = "";
     const todoList = currentProject.todoList;
@@ -142,29 +127,42 @@ const displayTasks = () => {
             editTask(task.id);
         });
 
+        const delTask = (container) => {
+            todo.removeTask(task.id)
+            container.remove();
+        }
+
         const delBtn = document.createElement("button");
         delBtn.textContent = "Delete";
         delBtn.className = "del-btn";
         delBtn.addEventListener("click", (e) => {
             e.stopPropagation();
-            const container = delBtn.parentElement.parentElement;
-            todo.removeTask(task.id);
-            container.remove();
+            delTask(delBtn.parentElement.parentElement);
         })
 
+        const checkBox = document.createElement("button");
+        checkBox.addEventListener("click", (e) => {
+            e.stopPropagation();
+            delTask(checkBox.parentElement);
+        })
+        checkBox.className = "checkbox";
+
+        const taskContainer = document.createElement("div");
+
         taskBtns.append(editBtn, delBtn);
-        taskItem.append(taskTitle, taskDueDate, taskBtns);
+        taskContainer.append(taskTitle, taskDueDate, taskBtns)
+        taskItem.append(checkBox, taskContainer);
         tasksTab.append(taskItem);
     }
 }
 
 function projectEvent(projectId) {
-    todo.updateCurrentProject(projectId);
+    todo.setCurrentProject(projectId);
     displayTasks();
 }
 
 function editTask(taskId) {
-    const task = todo.getCurrentTask(taskId);
+    const task = todo.getTask(taskId);
     const dialog = document.getElementById("create-task");
     const form = dialog.querySelector("form");
 
@@ -247,6 +245,6 @@ setupDialog(".task-btn", "create-task", (dialog) => {
     const desc = dialog.querySelector("#desc").value;
     const dueDate = new Date(dialog.querySelector("#due-date").value);
     const priority = dialog.querySelector('input[name="priority"]:checked').value;
-    todo.addProjectTask(new Task(title, desc, dueDate, priority));
+    todo.addTask(new Task(title, desc, dueDate, priority));
     displayTasks();
 }); 

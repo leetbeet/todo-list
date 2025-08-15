@@ -112,3 +112,10 @@ form {
 .task-btns {
     float: right;
 }
+
+.checkbox {
+    height: 12px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    border: 1px solid black;
+}
