@@ -33,6 +33,7 @@ body {
 .todo-list {
     height: 100vh;
     width: 82vw;
+    padding: 0 16vw;
 }
 
 .add-project-btn {
@@ -52,11 +53,11 @@ body {
 }
 
 button:hover {
-    opacity: 0.5;
+    opacity: 0.9;
 }
 
 button:active {
-    opacity: 0.75;
+    opacity: 0.85;
 }
 
 dialog {
@@ -64,6 +65,7 @@ dialog {
   border: none;
   border-radius: 8px;
   margin: auto; 
+  box-shadow: 1px 1px 6px rgb(0, 0, 0, 0.5);
 }
 
 form {
@@ -85,13 +87,12 @@ form {
     border-radius: 8px;
 }
 
-#cancel-btn {
-    border: 1px solid black;
-    background-color: white;
+.cancel-btn {
+    background-color: #e0e0e0;
     color: black;
 }
 
-#submit-btn {
+.submit-btn {
     color: white;
     background-color: black;
 }
@@ -106,4 +107,8 @@ form {
 
 #show-task div {
     padding: 2px;
+}
+
+.task-btns {
+    float: right;
 }

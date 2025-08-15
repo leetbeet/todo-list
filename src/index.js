@@ -77,14 +77,14 @@ class Task {
 const todo = (() => {
     let projectsList = [new Project("Today")];
     const projectToday = document.querySelector(".project-btn");
-    projectToday.id = projectsList[0]._id;
-    projectToday.addEventListener("click", () => projectEventListener(projectsList[0]._id));    
+    projectToday.id = projectsList[0].id;
+    projectToday.addEventListener("click", () => projectEvent(projectsList[0].id));    
     let currentProject = projectsList[0];
 
     return {
         addProject(project) {
             projectsList.push(project);
-            return project._id;
+            return project.id;
         },
         removeProject(projectId) {
             projectsList = projectsList.filter(project => project.id !== projectId);
@@ -99,72 +99,125 @@ const todo = (() => {
             return currentProject;
         },
         getCurrentTask(taskId) {
-            return currentProject._todoList.find(task => task.id === taskId);
+            return currentProject.todoList.find(task => task.id === taskId);
         }
     };
 })();
 
-const loadTasks = () => {
+const displayTasks = () => {
     const currentProject = todo.getCurrentProject();
     const tasksTab = document.querySelector(".tasks-tab");
     tasksTab.innerHTML = "";
-    const todoList = currentProject._todoList;
+    const todoList = currentProject.todoList;
 
     for (const task of todoList) {
         const taskItem = document.createElement("div");
         taskItem.className = "task";
-        taskItem.id = task._id;
-        taskItem.addEventListener("click", () => taskEventListener(task));
+        taskItem.id = task.id;
+        taskItem.addEventListener("click", () => showTask(task));
 
         const taskTitle = document.createElement("div");
         taskTitle.className = "task-title";
-        taskTitle.textContent = task._title;
+        taskTitle.textContent = task.title;
+
         const taskDueDate = document.createElement("div");
         taskDueDate.className = "task-due-date";
-        taskDueDate.textContent = task._dueDate;
+        taskDueDate.textContent = task.dueDate;
 
-        taskItem.append(taskTitle, taskDueDate);
+        const taskBtns = document.createElement("div");
+        taskBtns.className = "task-btns";
+
+        const editBtn = document.createElement("button");
+        editBtn.className = "edit-btn";
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            editTask(task.id)
+        });
+
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "Delete";
+        delBtn.className = "del-btn";
+
+        taskBtns.append(editBtn, delBtn);
+        taskItem.append(taskTitle, taskDueDate, taskBtns);
         tasksTab.append(taskItem);
     }
 }
 
-function projectEventListener(projectId) {
+function projectEvent(projectId) {
     todo.updateCurrentProject(projectId);
-    loadTasks();
+    displayTasks();
 }
 
-function taskEventListener(task) {
+function editTask(taskId) {
+    const task = todo.getCurrentTask(taskId);
+    const dialog = document.getElementById("create-task");
+    const form = dialog.querySelector("form");
+
+    // Pre-fill the form fields
+    form.reset();
+    dialog.querySelector("#task-title").value = task.title;
+    dialog.querySelector("#desc").value = task.description;
+    dialog.querySelector("#due-date").value = task.dueDate.toISOString().split("T")[0];
+    dialog.querySelector(`input[name="priority"][value="${task.priority}"]`).checked = true;
+
+    // Override submit for this dialog instance only
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+
+        task.title = dialog.querySelector("#task-title").value;
+        task.description = dialog.querySelector("#desc").value;
+        task.dueDate = new Date(dialog.querySelector("#due-date").value);
+        task.priority = dialog.querySelector('input[name="priority"]:checked').value;
+
+        displayTasks();
+        dialog.close();
+    }, { capture: true, once: true }); // capture ensures it runs first, once removes it after
+
+    dialog.showModal();
+}
+
+
+
+
+function showTask(task) {
     const dialog = document.getElementById("show-task");
     const taskInfo = dialog.children;
-    taskInfo[1].textContent = `Title: ${task._title}`;
-    taskInfo[2].textContent = `Description: ${task._description}`;
-    taskInfo[3].textContent = `Due date: ${task._dueDate}`;
-    taskInfo[4].textContent = `Priority: ${task._priority}`;
+    taskInfo[1].textContent = `Title: ${task.title}`;
+    taskInfo[2].textContent = `Description: ${task.description}`;
+    taskInfo[3].textContent = `Due date: ${task.dueDate}`;
+    taskInfo[4].textContent = `Priority: ${task.priority}`;
     dialog.showModal();
 
     document.querySelector(".close-btn").addEventListener("click", () => dialog.close(), { once: true });
 }
 
 function setupDialog(openBtnSelector, dialogId, onSubmit) {
-    document.querySelector(openBtnSelector).addEventListener("click", () => {
-        const dialog = document.getElementById(dialogId);
-        dialog.showModal();
+    const openBtn = document.querySelector(openBtnSelector);
+    const dialog = document.getElementById(dialogId);
+    const form = dialog.querySelector("form");
 
-        dialog.querySelector(".cancel-btn").addEventListener("click", () => {
-            dialog.close();
-        }, { once: true });
-
-        const form = dialog.querySelector("form");
+    openBtn.addEventListener("click", () => {
         form.reset();
-        form.addEventListener("submit", function(e) {
-            e.preventDefault();
-            onSubmit(dialog);
-            dialog.close();
-        }, { once: true });
+        dialog.showModal();
+    });
+
+    dialog.querySelector(".cancel-btn").addEventListener("click", () => {
+        dialog.close();
+    });
+
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        onSubmit(dialog);
+        dialog.close();
     });
 }
 
-// Project dialog
+
+// Project creation dialog
 setupDialog(".add-project-btn", "create-project", (dialog) => {
     const title = dialog.querySelector("#project-title").value;
     const idText = todo.addProject(new Project(title));
@@ -175,15 +228,17 @@ setupDialog(".add-project-btn", "create-project", (dialog) => {
     project.className = "project-btn";
     project.textContent = title;
     projectsTab.appendChild(project);
-    project.addEventListener("click", () => projectEventListener(project.id));
+    project.addEventListener("click", () => projectEvent(project.id));
 });
 
-// Task dialog
+// Task creation dialog
 setupDialog(".task-btn", "create-task", (dialog) => {
     const title = dialog.querySelector("#task-title").value;
     const desc = dialog.querySelector("#desc").value;
     const dueDate = new Date(dialog.querySelector("#due-date").value);
     const priority = dialog.querySelector('input[name="priority"]:checked').value;
     todo.addProjectTask(new Task(title, desc, dueDate, priority));
-    loadTasks();
+    displayTasks();
 }); 
+
+
