@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+<script defer src="main.js"></script></head>
+<body>
+    <section class="projects">
+        <h1>Projects</h1>
+        <button class="add-project-btn">+ Add Project</button>
+        <button class="project-btn">Today</button>                                
+    </section>
+    <section class="todo-list">
+        <h1 class="tasks-tab-header">Today</h1>
+        <div class="tasks-tab"></div>
+        <button class="task-btn">+ Add task</button>
+    </section>
+
+    <dialog id="create-project">
+        <form action="#" method="dialog">
+            <div>
+                <label for="project-title">Title: </label>
+                <input type="text" id="project-title" name="project-title" required>
+            </div>
+
+            <div class="form-buttons">
+                <button class="cancel-btn" type="button">Cancel</button>
+                <button class="submit-btn" type="submit">Submit</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="create-task">
+        <form action="#" method="dialog">
+            <div>
+                <label for="task-title">Title: </label>
+                <input type="text" id="task-title" name="task-title" required>
+            </div>
+            <div>
+                <label for="desc">Description: </label>
+                <input type="text" name="desc" id="desc" required>
+            </div>
+            <div>
+                <label for="due-date">Due date: </label>
+                <input type="date" name="due-date" id="due-date" required>
+            </div>
+            <div>
+                <p>Priority: </p>
+
+                <div>
+                    <label for="very-urgent">Very urgent</label>
+                    <input type="radio" name="priority" id="very-urgent" value="Very urgent" required>
+                </div>
+
+                <div>
+                    <label for="urgent">Urgent</label>
+                    <input type="radio" name="priority" id="urgent" value="Urgent">
+                </div>
+
+                <div>
+                    <label for="not-urgent">Not urgent</label>
+                    <input type="radio" name="priority" id="not-urgent" value="Not urgent">
+                </div>
+
+                <div class="form-buttons">
+                    <button class="cancel-btn" type="button">Cancel</button>
+                    <button class="submit-btn" type="submit">Submit</button>
+                </div>
+            </div>
+        </form>
+    </dialog>
+    <dialog id="show-task">
+        <button class="close-btn">×</button>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </dialog>
+</body>
+</html>
