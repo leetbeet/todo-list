@@ -23,8 +23,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    width: 12vw;
-    padding: 12px 24px;
+    padding: 12px 64px 12px 24px;
     color: var(--dark-gray);
     background-color: var(--gray);
     border-right: 1px solid var(--gray-border);

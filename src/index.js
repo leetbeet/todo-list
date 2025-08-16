@@ -1,4 +1,5 @@
 import "./style.css"
+import { format } from 'date-fns';
 
 class Project {
     constructor(title) {
@@ -114,7 +115,7 @@ const displayTasks = () => {
 
         const taskDueDate = document.createElement("div");
         taskDueDate.className = "task-due-date";
-        taskDueDate.textContent = task.dueDate;
+        taskDueDate.textContent = format(task.dueDate, 'dd/MM/yyyy');
 
         const taskBtns = document.createElement("div");
         taskBtns.className = "task-btns";
@@ -211,7 +212,7 @@ function showTask(task) {
     const taskInfo = dialog.children;
     taskInfo[1].textContent = `Title: ${task.title}`;
     taskInfo[2].textContent = `Description: ${task.description}`;
-    taskInfo[3].textContent = `Due date: ${task.dueDate}`;
+    taskInfo[3].textContent = `Due date: ${format(task.dueDate, 'dd/MM/yyyy')}`;
     taskInfo[4].textContent = `Priority: ${task.priority}`;
     dialog.showModal();
 
