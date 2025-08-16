@@ -40,7 +40,6 @@ class Task {
   get id() { return this._id; }
 }
 
-
 const todo = (() => {
     const STORAGE_KEY = 'todoData';
 
@@ -122,11 +121,9 @@ const todo = (() => {
         addProjectTask: (task) => { currentProject.addTask(task); save(); }, 
         removeTask: (taskId) => { currentProject.todoList = currentProject.todoList.filter(t => t.id !== taskId); save(); },
         getTask: (taskId) => currentProject.todoList.find(t => t.id === taskId),
-
         save
     };
 })();
-
 
 const displayTasks = () => {
     const currentProject = todo.getCurrentProject();
@@ -276,7 +273,6 @@ function setupDialog(openBtnSelector, dialogId, onSubmit) {
         dialog.close();
     });
 }
-
 
 // Project creation dialog
 setupDialog(".add-project-btn", "create-project", (dialog) => {
