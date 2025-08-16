@@ -10,6 +10,7 @@
     --gray: #f9f9f9;
     --gray-text: #5f6368;
     --gray-border: #f0f0f0;
+    --btn-color: #efefef;
     --dark-gray: #202124;
 }
 
@@ -22,7 +23,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    width: 13vw;
+    width: 12vw;
     padding: 12px 24px;
     color: var(--dark-gray);
     background-color: var(--gray);
@@ -32,8 +33,8 @@ body {
 
 .todo-list {
     height: 100vh;
-    width: 82vw;
-    padding: 0 16vw;
+    width: 80vw;
+    padding: 32px 16vw;
 }
 
 .add-project-btn {
@@ -53,11 +54,11 @@ body {
 }
 
 button:hover {
-    opacity: 0.9;
+    opacity: 0.8;
 }
 
 button:active {
-    opacity: 0.85;
+    opacity: 0.75;
 }
 
 dialog {
@@ -88,8 +89,7 @@ form {
 }
 
 .cancel-btn {
-    background-color: #e0e0e0;
-    color: black;
+    background-color: var(--btn-color);
 }
 
 .submit-btn {
@@ -109,13 +109,56 @@ form {
     padding: 2px;
 }
 
-.task-btns {
-    float: right;
+.task-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-btn {
+    background-color: var(--btn-color);
+    margin-right: 8px;
+    color: var(--dark-gray);    
+}
+
+.del-btn {
+    background-color: #FF3B30;
+    color: white;
+}
+
+.task-btns button {
+    border: none;
+    margin-top: 8px;
+    padding: 4px;
+    border-radius: 6px;
 }
 
 .checkbox {
-    height: 12px;
+    margin: 0 8px;
+    transform: translateY(3px);
+    height: 16px;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
-    border: 1px solid black;
+}
+
+.task {
+    display: flex;
+    padding: 16px 0;
+    border-bottom: 2px solid var(--gray-border);
+}
+
+.task-btn {
+    margin-top: 8px;
+    color: var(--dark-gray);    
+    background-color: var(--btn-color);
+    border: none;
+    border-radius: 6px;
+    padding: 6px;
+}
+
+.task-title {
+    font-weight: bold;
+}
+
+.task-due-date {
+    color: var(--gray-text);
 }

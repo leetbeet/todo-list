@@ -87,7 +87,7 @@ const todo = (() => {
         setCurrentProject: (projectId) => currentProject = projects.find(p => p.id === projectId),
         addProject: (project) => { projects.push(project); return project.id; },
         removeProject: (id) => { projects = projects.filter(p => p.id !== id); },
-        addTask: (task) => currentProject.addTask(task),
+        addProjectTask: (task) => currentProject.addTask(task), 
         removeTask: (taskId) => currentProject.todoList = currentProject.todoList.filter(t => t.id !== taskId),
         getTask: (taskId) => currentProject.todoList.find(t => t.id === taskId)
     };
@@ -137,21 +137,36 @@ const displayTasks = () => {
         delBtn.className = "del-btn";
         delBtn.addEventListener("click", (e) => {
             e.stopPropagation();
-            delTask(delBtn.parentElement.parentElement);
+            delTask(delBtn.parentElement.parentElement.parentElement);
         })
 
-        const checkBox = document.createElement("button");
-        checkBox.addEventListener("click", (e) => {
+        const checkbox = document.createElement("button");
+        switch(task.priority) {
+            case "Very urgent":
+                checkbox.style.border = "1px solid #7F0000";
+                checkbox.style.backgroundColor = "#FF4C4C";
+                break;
+            case "Urgent":
+                checkbox.style.border = "1px solid #7F6600";
+                checkbox.style.backgroundColor = "#FFD93D";
+                break;
+            case "Not urgent":
+                checkbox.style.border = "1px solid #003312";
+                checkbox.style.backgroundColor = "#4CAF50";
+                break;
+        }
+        checkbox.addEventListener("click", (e) => {
             e.stopPropagation();
-            delTask(checkBox.parentElement);
+            delTask(checkbox.parentElement);
         })
-        checkBox.className = "checkbox";
+        checkbox.className = "checkbox";
 
         const taskContainer = document.createElement("div");
+        taskContainer.className = "task-container";
 
         taskBtns.append(editBtn, delBtn);
         taskContainer.append(taskTitle, taskDueDate, taskBtns)
-        taskItem.append(checkBox, taskContainer);
+        taskItem.append(checkbox, taskContainer);
         tasksTab.append(taskItem);
     }
 }
@@ -245,6 +260,6 @@ setupDialog(".task-btn", "create-task", (dialog) => {
     const desc = dialog.querySelector("#desc").value;
     const dueDate = new Date(dialog.querySelector("#due-date").value);
     const priority = dialog.querySelector('input[name="priority"]:checked').value;
-    todo.addTask(new Task(title, desc, dueDate, priority));
+    todo.addProjectTask(new Task(title, desc, dueDate, priority));
     displayTasks();
 }); 
