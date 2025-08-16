@@ -65,7 +65,7 @@ dialog {
   border: none;
   border-radius: 8px;
   margin: auto; 
-  box-shadow: 1px 1px 6px rgb(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
 }
 
 form {
